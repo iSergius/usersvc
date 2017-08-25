@@ -65,15 +65,15 @@ public class UserControllerTest {
                 .put(3)
                 .put(5);
         String content = new JSONObject()
-                .put(PROPERTY_NAME, "Вася")
-                .put(PROPERTY_LOGIN, "vasa")
-                .put(PROPERTY_PASSWORD, "123123")
+                .put(PROPERTY_NAME, VALUE_NAME)
+                .put(PROPERTY_LOGIN, VALUE_LOGIN)
+                .put(PROPERTY_PASSWORD, VALUE_PASSWORD)
                 .put(PROPERTY_ROLES, roles)
                 .toString();
-        mockMvc.perform(post("/add")
+        mockMvc.perform(post(PATH_ADD)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(content))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @Test
@@ -91,6 +91,7 @@ public class UserControllerTest {
         mockMvc.perform(post(PATH_ADD)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content));
+
         Mockito.verify(userInteractor).add(eq(new User(0, VALUE_NAME, VALUE_LOGIN, VALUE_PASSWORD)));
     }
 }

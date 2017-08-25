@@ -26,6 +26,6 @@ public class UserController {
     @PostMapping("/add")
     public ResponseEntity add(@RequestBody User user) {
         userInteractor.add(user);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 }
