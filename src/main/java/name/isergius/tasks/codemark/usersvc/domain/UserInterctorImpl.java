@@ -18,4 +18,9 @@ public class UserInterctorImpl implements UserInteractor {
     public void add(User user) {
         userRepository.save(user);
     }
+
+    @Override
+    public User get(long id) {
+        return null;
+    }
 }
