@@ -1,12 +1,17 @@
 package name.isergius.tasks.codemark.usersvc.model;
 
+
+import javax.persistence.*;
 import java.util.Objects;
 
 /**
  * Sergey Kondratyev
  */
+@Entity
+@Table(name = "users")
 public class User {
 
+    @Id
     private long id;
     private String name;
     private String login;
