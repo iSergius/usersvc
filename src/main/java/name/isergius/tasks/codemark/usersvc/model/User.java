@@ -18,9 +18,16 @@ import java.util.Objects;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
+
+    @Basic
     private String name;
+
+    @Basic
     private String login;
+
+    @Basic
     private String password;
 
     @JsonDeserialize(contentConverter = DeserializerRoleJsonConverter.class)

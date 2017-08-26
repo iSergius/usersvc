@@ -94,17 +94,17 @@ public class UserControllerTest {
 
     @Test
     public void testGet_success() throws Exception {
-        JSONArray roles = new JSONArray()
-                .put(1);
+        User user = createUser();
         String content = new JSONObject()
-                .put(PROPERTY_NAME, VALUE_NAME)
-                .put(PROPERTY_LOGIN, VALUE_LOGIN)
-                .put(PROPERTY_PASSWORD, VALUE_PASSWORD)
-                .put(PROPERTY_ROLES, roles)
+                .put(PROPERTY_ID, user.getId())
+                .put(PROPERTY_NAME, user.getName())
+                .put(PROPERTY_LOGIN, user.getLogin())
+                .put(PROPERTY_PASSWORD, user.getPassword())
+                .put(PROPERTY_ROLES, new JSONArray()
+                        .put(role.getId()))
                 .toString();
-        createUser();
 
-        mockMvc.perform(get(PATH_GET, VALUE_ID).accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(PATH_GET, user.getId()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().json(content));
@@ -118,9 +118,8 @@ public class UserControllerTest {
 
     @Test
     public void testDelete_success() throws Exception {
-        int id = 1;
-        createUser();
-        mockMvc.perform(delete(PATH_DELETE, id))
+        User user = createUser();
+        mockMvc.perform(delete(PATH_DELETE, user.getId()))
                 .andExpect(status().isOk());
         assertTrue(userRepository.count() == 0);
     }
@@ -134,34 +133,24 @@ public class UserControllerTest {
 
     @Test
     public void testList_success() throws Exception {
-        int id1 = 2;
-        String name1 = "Петя";
-        String login1 = "petr";
-        String password1 = "321321";
-        User user1 = new User(id1, name1, login1, password1, asList(role));
-        userRepository.save(user1);
-        int id2 = 3;
-        String name2 = "Иван";
-        String login2 = "ivan";
-        String password2 = "456456";
-        User user2 = new User(id2, name2, login2, password2, asList(role));
-        userRepository.save(user2);
+        User user1 = userRepository.save(new User("Петя", "petr", "321321", asList(role)));
+        User user2 = userRepository.save(new User("Иван", "ivan", "456456", asList(role)));
 
         String array = new JSONArray()
                 .put(new JSONObject()
-                        .put(PROPERTY_ID, id1)
-                        .put(PROPERTY_NAME, name1)
-                        .put(PROPERTY_LOGIN, login1)
-                        .put(PROPERTY_PASSWORD, password1)
+                        .put(PROPERTY_ID, user1.getId())
+                        .put(PROPERTY_NAME, user1.getName())
+                        .put(PROPERTY_LOGIN, user1.getLogin())
+                        .put(PROPERTY_PASSWORD, user1.getPassword())
                         .put(PROPERTY_ROLES, new JSONArray()
-                                .put(1)))
+                                .put(role.getId())))
                 .put(new JSONObject()
-                        .put(PROPERTY_ID, id2)
-                        .put(PROPERTY_NAME, name2)
-                        .put(PROPERTY_LOGIN, login2)
-                        .put(PROPERTY_PASSWORD, password2)
+                        .put(PROPERTY_ID, user2.getId())
+                        .put(PROPERTY_NAME, user2.getName())
+                        .put(PROPERTY_LOGIN, user2.getLogin())
+                        .put(PROPERTY_PASSWORD, user2.getPassword())
                         .put(PROPERTY_ROLES, new JSONArray()
-                                .put(1)))
+                                .put(role.getId())))
                 .toString();
 
         mockMvc.perform(get(PATH_LIST).accept(MediaType.APPLICATION_JSON))
@@ -237,7 +226,7 @@ public class UserControllerTest {
     }
 
     private User createUser() {
-        List<Role> roles = asList(roleRepository.findOne(VALUE_ID));
+        List<Role> roles = asList(role);
         return userRepository.save(new User(VALUE_ID, VALUE_NAME, VALUE_LOGIN, VALUE_PASSWORD, roles));
     }
 

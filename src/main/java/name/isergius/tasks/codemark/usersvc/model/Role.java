@@ -1,8 +1,6 @@
 package name.isergius.tasks.codemark.usersvc.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 
 /**
@@ -14,7 +12,10 @@ import java.util.Objects;
 public class Role {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
+
+    @Basic
     private String name;
 
     public Role() {
