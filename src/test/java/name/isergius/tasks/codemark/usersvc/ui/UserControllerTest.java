@@ -167,6 +167,13 @@ public class UserControllerTest {
                 .andExpect(content().json(array));
     }
 
+    @Test
+    public void testList_empty() throws Exception {
+        mockMvc.perform(get(PATH_LIST).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[]"));
+    }
+
     private User createUser() {
         List<Role> roles = asList(roleRepository.findOne(VALUE_ID));
         return userRepository.save(new User(VALUE_ID, VALUE_NAME, VALUE_LOGIN, VALUE_PASSWORD, roles));
