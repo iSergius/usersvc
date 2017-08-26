@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 /**
  * Sergey Kondratyev
  */
@@ -27,6 +29,10 @@ public class UserController {
     @GetMapping(path = "/get/{id}")
     public ResponseEntity<User> get(@PathVariable("id") long id) {
         User user = userInteractor.get(id);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        if (Objects.nonNull(user)) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

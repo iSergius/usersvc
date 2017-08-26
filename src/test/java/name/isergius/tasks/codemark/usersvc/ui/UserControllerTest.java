@@ -46,6 +46,7 @@ public class UserControllerTest {
     public static final String VALUE_LOGIN = "vasa";
     public static final String VALUE_PASSWORD = "123123";
     public static final String PATH_ADD = "/add";
+    public static final String PATH_GET = "/get/{id}";
 
     @Autowired
     private WebApplicationContext wac;
@@ -122,4 +123,9 @@ public class UserControllerTest {
                 .andExpect(content().json(content));
     }
 
+    @Test
+    public void testGet_notExistUser() throws Exception {
+        mockMvc.perform(get(PATH_GET, 1).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
 }
