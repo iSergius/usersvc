@@ -14,19 +14,23 @@ import java.util.Objects;
 @RestController
 public class UserController {
 
+    public static final String PATH_ADD = "/add";
+    public static final String PATH_GET = "/get/{id}";
+    public static final String PATH_DELETE = "/delete/{id}";
+
     private UserInteractor userInteractor;
 
     public UserController(UserInteractor userInteractor) {
         this.userInteractor = userInteractor;
     }
 
-    @PostMapping("/add")
+    @PostMapping(path = PATH_ADD)
     public ResponseEntity add(@RequestBody User user) {
         userInteractor.add(user);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @GetMapping(path = "/get/{id}")
+    @GetMapping(path = PATH_GET)
     public ResponseEntity<User> get(@PathVariable("id") long id) {
         User user = userInteractor.get(id);
         if (Objects.nonNull(user)) {
@@ -36,7 +40,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping(path = "/delete/{id}")
+    @DeleteMapping(path = PATH_DELETE)
     public ResponseEntity delete(@PathVariable("id") long id) {
         userInteractor.delete(id);
         return new ResponseEntity(HttpStatus.OK);
