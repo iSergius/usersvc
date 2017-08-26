@@ -24,9 +24,9 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static java.util.Arrays.asList;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -127,5 +127,13 @@ public class UserControllerTest {
     public void testGet_notExistUser() throws Exception {
         mockMvc.perform(get(PATH_GET, 1).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testDelete_success() throws Exception {
+        int id = 1;
+        mockMvc.perform(delete("/delete/{id}", id))
+                .andExpect(status().isOk());
+        verify(userInteractor).delete(id);
     }
 }

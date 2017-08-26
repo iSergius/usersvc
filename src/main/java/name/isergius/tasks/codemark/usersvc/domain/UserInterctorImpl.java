@@ -23,4 +23,9 @@ public class UserInterctorImpl implements UserInteractor {
     public User get(long id) {
         return userRepository.findOne(id);
     }
+
+    @Override
+    public void delete(long id) {
+
+    }
 }

@@ -35,4 +35,10 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @DeleteMapping(path = "/delete/{id}")
+    public ResponseEntity delete(@PathVariable("id") long id) {
+        userInteractor.delete(id);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

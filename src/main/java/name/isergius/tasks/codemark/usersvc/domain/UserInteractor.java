@@ -10,4 +10,6 @@ public interface UserInteractor {
     void add(User user);
 
     User get(long id);
+
+    void delete(long id);
 }
