@@ -8,5 +8,9 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface UserRepository extends CrudRepository<User, Long> {
 
+    @Override
     User save(User entity);
+
+    @Override
+    User findOne(Long aLong);
 }

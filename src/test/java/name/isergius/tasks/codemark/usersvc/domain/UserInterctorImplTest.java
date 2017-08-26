@@ -1,14 +1,16 @@
 package name.isergius.tasks.codemark.usersvc.domain;
 
 import name.isergius.tasks.codemark.usersvc.data.UserRepository;
+import name.isergius.tasks.codemark.usersvc.model.Role;
 import name.isergius.tasks.codemark.usersvc.model.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import static java.util.Arrays.asList;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
 
 /**
  * Sergey Kondratyev
@@ -32,7 +34,16 @@ public class UserInterctorImplTest {
 
         interctor.add(expectedUser);
 
-        Mockito.verify(repository).save(eq(expectedUser));
+        verify(repository).save(eq(expectedUser));
     }
 
+    @Test
+    public void testGet_gettingUserFromRepository() throws Exception {
+        long id = 1;
+        User expectedUser = new User(id, "Admin", "adm", "pass", asList(new Role(id, "admin")));
+
+        User actualUser = interctor.get(id);
+
+        verify(repository).findOne(id);
+    }
 }

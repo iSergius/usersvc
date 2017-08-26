@@ -21,6 +21,6 @@ public class UserInterctorImpl implements UserInteractor {
 
     @Override
     public User get(long id) {
-        return null;
+        return userRepository.findOne(id);
     }
 }
