@@ -46,4 +46,13 @@ public class UserInterctorImplTest {
 
         verify(repository).findOne(id);
     }
+
+    @Test
+    public void testDelete_deletingUserFromRepository() throws Exception {
+        long id = 1;
+
+        interctor.delete(id);
+
+        verify(repository).delete(id);
+    }
 }

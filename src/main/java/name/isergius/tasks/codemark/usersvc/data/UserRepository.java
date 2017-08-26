@@ -12,5 +12,8 @@ public interface UserRepository extends CrudRepository<User, Long> {
     User save(User entity);
 
     @Override
-    User findOne(Long aLong);
+    User findOne(Long id);
+
+    @Override
+    void delete(Long id);
 }

@@ -26,6 +26,6 @@ public class UserInterctorImpl implements UserInteractor {
 
     @Override
     public void delete(long id) {
-
+        userRepository.delete(id);
     }
 }
