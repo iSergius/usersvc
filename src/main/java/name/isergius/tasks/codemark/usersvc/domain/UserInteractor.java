@@ -15,5 +15,7 @@ public interface UserInteractor {
 
     void delete(long id);
 
-    List<User> getAll();
+    List<User> list();
+
+    void edit(User user);
 }

@@ -32,7 +32,12 @@ public class UserInterctorImpl implements UserInteractor {
     }
 
     @Override
-    public List<User> getAll() {
+    public List<User> list() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public void edit(User user) {
+        userRepository.save(user);
     }
 }

@@ -20,6 +20,7 @@ public class UserController {
     public static final String PATH_GET = "/get/{id}";
     public static final String PATH_DELETE = "/delete/{id}";
     public static final String PATH_LIST = "/list";
+    public static final String PATH_EDIT = "/edit/{id}";
 
     private UserInteractor userInteractor;
 
@@ -45,8 +46,14 @@ public class UserController {
 
     @GetMapping(path = PATH_LIST)
     public ResponseEntity<List<User>> list() {
-        List<User> users = userInteractor.getAll();
+        List<User> users = userInteractor.list();
         return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @PutMapping(path = PATH_EDIT)
+    public ResponseEntity edit(@PathVariable("id") long id, @RequestBody User user) {
+        userInteractor.edit(user);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping(path = PATH_DELETE)

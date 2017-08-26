@@ -20,10 +20,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 import static name.isergius.tasks.codemark.usersvc.ui.UserController.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -172,6 +174,29 @@ public class UserControllerTest {
         mockMvc.perform(get(PATH_LIST).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[]"));
+    }
+
+    @Test
+    public void testEdit_success() throws Exception {
+        User user = createUser();
+        Role role = roleRepository.save(new Role("USER"));
+        String content = new JSONObject()
+                .put(PROPERTY_ID, user.getId())
+                .put(PROPERTY_NAME, user.getName())
+                .put(PROPERTY_LOGIN, user.getLogin())
+                .put(PROPERTY_ROLES, new JSONArray().put(role.getId()))
+                .toString();
+
+        mockMvc.perform(put("/edit/{id}", user.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content))
+                .andExpect(status().isOk());
+
+        User actualUser = userRepository.findOne(user.getId());
+        List<Role> roles = new ArrayList<>(actualUser.getRoles());
+        assertTrue(roles.size() == 1);
+        Role r = roles.get(0);
+        assertEquals(role.getId(), r.getId());
     }
 
     private User createUser() {

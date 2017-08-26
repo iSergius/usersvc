@@ -18,10 +18,6 @@ public class DeserializerRoleJsonConverter extends StdConverter<Long, Role> {
 
     @Override
     public Role convert(Long value) {
-        System.out.println(roleRepository);
-        System.out.println("!!!!!!!!!! " + value);
-        Role role = roleRepository.findOne(value);
-        System.out.println(role);
-        return role;
+        return roleRepository.findOne(value);
     }
 }
