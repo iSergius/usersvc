@@ -51,7 +51,11 @@ public class UserController {
     }
 
     @PutMapping(path = PATH_EDIT)
-    public ResponseEntity edit(@PathVariable("id") long id, @RequestBody User user) {
+    public ResponseEntity edit(@PathVariable("id") long id,
+                               @RequestBody User user) {
+        if (user.getId() != id) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
         try {
             userInteractor.edit(user);
             return new ResponseEntity(HttpStatus.OK);

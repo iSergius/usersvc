@@ -217,6 +217,25 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    public void testEdit_editUserByWrongPath() throws Exception {
+        User user = createUser();
+        JSONArray roles = new JSONArray()
+                .put(1);
+        String content = new JSONObject()
+                .put(PROPERTY_ID, user.getId())
+                .put(PROPERTY_NAME, VALUE_NAME)
+                .put(PROPERTY_LOGIN, VALUE_LOGIN)
+                .put(PROPERTY_PASSWORD, VALUE_PASSWORD)
+                .put(PROPERTY_ROLES, roles)
+                .toString();
+
+        mockMvc.perform(put(PATH_EDIT, user.getId() + 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content))
+                .andExpect(status().isBadRequest());
+    }
+
     private User createUser() {
         List<Role> roles = asList(roleRepository.findOne(VALUE_ID));
         return userRepository.save(new User(VALUE_ID, VALUE_NAME, VALUE_LOGIN, VALUE_PASSWORD, roles));
