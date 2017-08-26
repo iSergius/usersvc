@@ -187,7 +187,7 @@ public class UserControllerTest {
                 .put(PROPERTY_ROLES, new JSONArray().put(role.getId()))
                 .toString();
 
-        mockMvc.perform(put("/edit/{id}", user.getId())
+        mockMvc.perform(put(PATH_EDIT, user.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andExpect(status().isOk());
@@ -197,6 +197,24 @@ public class UserControllerTest {
         assertTrue(roles.size() == 1);
         Role r = roles.get(0);
         assertEquals(role.getId(), r.getId());
+    }
+
+    @Test
+    public void testEdit_editIsNotExistUser() throws Exception {
+        JSONArray roles = new JSONArray()
+                .put(1);
+        String content = new JSONObject()
+                .put(PROPERTY_ID, VALUE_ID)
+                .put(PROPERTY_NAME, VALUE_NAME)
+                .put(PROPERTY_LOGIN, VALUE_LOGIN)
+                .put(PROPERTY_PASSWORD, VALUE_PASSWORD)
+                .put(PROPERTY_ROLES, roles)
+                .toString();
+
+        mockMvc.perform(put(PATH_EDIT, VALUE_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content))
+                .andExpect(status().isBadRequest());
     }
 
     private User createUser() {

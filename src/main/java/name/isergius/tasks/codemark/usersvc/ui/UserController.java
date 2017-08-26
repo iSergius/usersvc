@@ -52,17 +52,21 @@ public class UserController {
 
     @PutMapping(path = PATH_EDIT)
     public ResponseEntity edit(@PathVariable("id") long id, @RequestBody User user) {
-        userInteractor.edit(user);
-        return new ResponseEntity(HttpStatus.OK);
+        try {
+            userInteractor.edit(user);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping(path = PATH_DELETE)
     public ResponseEntity delete(@PathVariable("id") long id) {
         try {
             userInteractor.delete(id);
+            return new ResponseEntity(HttpStatus.OK);
         } catch (EmptyResultDataAccessException e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity(HttpStatus.OK);
     }
 }

@@ -38,6 +38,10 @@ public class UserInterctorImpl implements UserInteractor {
 
     @Override
     public void edit(User user) {
-        userRepository.save(user);
+        if (userRepository.exists(user.getId())) {
+            userRepository.save(user);
+        } else {
+            throw new IllegalArgumentException("User is not exist");
+        }
     }
 }
