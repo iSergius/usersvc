@@ -22,13 +22,20 @@ public class User {
     private String name;
     private String login;
     private String password;
+
     @JsonDeserialize(contentConverter = DeserializerRoleJsonConverter.class)
     @JsonSerialize(contentConverter = SerializerRoleJsonConverter.class)
-    @JoinTable(name = "user_roles")
-    @OneToMany(targetEntity = Role.class, fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles;
 
     public User() {
+    }
+
+    public User(String name, String login, String password, Collection<Role> roles) {
+        this(0, name, login, password, roles);
     }
 
     public User(long id, String name, String login, String password, Collection<Role> roles) {

@@ -3,6 +3,8 @@ package name.isergius.tasks.codemark.usersvc.domain;
 import name.isergius.tasks.codemark.usersvc.data.UserRepository;
 import name.isergius.tasks.codemark.usersvc.model.User;
 
+import java.util.List;
+
 /**
  * Sergey Kondratyev
  */
@@ -27,5 +29,10 @@ public class UserInterctorImpl implements UserInteractor {
     @Override
     public void delete(long id) {
         userRepository.delete(id);
+    }
+
+    @Override
+    public List<User> getAll() {
+        return userRepository.findAll();
     }
 }

@@ -47,6 +47,7 @@ public class UserControllerTest {
     public static final String VALUE_PASSWORD = "123123";
     public static final String VALUE_ROLE = "ADMIN";
     public static final long VALUE_ID = 1;
+    public static final String PROPERTY_ID = "id";
 
     @Autowired
     private WebApplicationContext wac;
@@ -57,16 +58,19 @@ public class UserControllerTest {
 
     private MockMvc mockMvc;
 
+    private Role role;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-        createRole();
+        role = createRole();
     }
 
     @After
     public void tearDown() throws Exception {
         userRepository.deleteAll();
+        roleRepository.deleteAll();
     }
 
     @Test
@@ -126,12 +130,49 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    private void createUser() {
-        List<Role> roles = asList(roleRepository.findOne(VALUE_ID));
-        userRepository.save(new User(VALUE_ID, VALUE_NAME, VALUE_LOGIN, VALUE_PASSWORD, roles));
+    @Test
+    public void testList_success() throws Exception {
+        int id1 = 2;
+        String name1 = "Петя";
+        String login1 = "petr";
+        String password1 = "321321";
+        User user1 = new User(id1, name1, login1, password1, asList(role));
+        userRepository.save(user1);
+        int id2 = 3;
+        String name2 = "Иван";
+        String login2 = "ivan";
+        String password2 = "456456";
+        User user2 = new User(id2, name2, login2, password2, asList(role));
+        userRepository.save(user2);
+
+        String array = new JSONArray()
+                .put(new JSONObject()
+                        .put(PROPERTY_ID, id1)
+                        .put(PROPERTY_NAME, name1)
+                        .put(PROPERTY_LOGIN, login1)
+                        .put(PROPERTY_PASSWORD, password1)
+                        .put(PROPERTY_ROLES, new JSONArray()
+                                .put(1)))
+                .put(new JSONObject()
+                        .put(PROPERTY_ID, id2)
+                        .put(PROPERTY_NAME, name2)
+                        .put(PROPERTY_LOGIN, login2)
+                        .put(PROPERTY_PASSWORD, password2)
+                        .put(PROPERTY_ROLES, new JSONArray()
+                                .put(1)))
+                .toString();
+
+        mockMvc.perform(get(PATH_LIST).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(array));
     }
 
-    private void createRole() {
-        roleRepository.save(new Role(VALUE_ID, VALUE_ROLE));
+    private User createUser() {
+        List<Role> roles = asList(roleRepository.findOne(VALUE_ID));
+        return userRepository.save(new User(VALUE_ID, VALUE_NAME, VALUE_LOGIN, VALUE_PASSWORD, roles));
+    }
+
+    private Role createRole() {
+        return roleRepository.save(new Role(VALUE_ID, VALUE_ROLE));
     }
 }

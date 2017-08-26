@@ -2,6 +2,8 @@ package name.isergius.tasks.codemark.usersvc.domain;
 
 import name.isergius.tasks.codemark.usersvc.model.User;
 
+import java.util.List;
+
 /**
  * Sergey Kondratyev
  */
@@ -12,4 +14,6 @@ public interface UserInteractor {
     User get(long id);
 
     void delete(long id);
+
+    List<User> getAll();
 }

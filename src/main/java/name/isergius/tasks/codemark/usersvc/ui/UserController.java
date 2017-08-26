@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -18,6 +19,7 @@ public class UserController {
     public static final String PATH_ADD = "/add";
     public static final String PATH_GET = "/get/{id}";
     public static final String PATH_DELETE = "/delete/{id}";
+    public static final String PATH_LIST = "/list";
 
     private UserInteractor userInteractor;
 
@@ -39,6 +41,12 @@ public class UserController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping(path = PATH_LIST)
+    public ResponseEntity<List<User>> list() {
+        List<User> users = userInteractor.getAll();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @DeleteMapping(path = PATH_DELETE)
