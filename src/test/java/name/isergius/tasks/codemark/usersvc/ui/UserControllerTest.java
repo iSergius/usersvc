@@ -119,6 +119,13 @@ public class UserControllerTest {
         assertTrue(userRepository.count() == 0);
     }
 
+    @Test
+    public void testDelete_tryDeleteIsNotExistUser() throws Exception {
+        long id = 1;
+        mockMvc.perform(delete(PATH_DELETE, id))
+                .andExpect(status().isBadRequest());
+    }
+
     private void createUser() {
         List<Role> roles = asList(roleRepository.findOne(VALUE_ID));
         userRepository.save(new User(VALUE_ID, VALUE_NAME, VALUE_LOGIN, VALUE_PASSWORD, roles));

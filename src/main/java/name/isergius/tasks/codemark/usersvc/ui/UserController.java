@@ -2,6 +2,7 @@ package name.isergius.tasks.codemark.usersvc.ui;
 
 import name.isergius.tasks.codemark.usersvc.domain.UserInteractor;
 import name.isergius.tasks.codemark.usersvc.model.User;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +43,11 @@ public class UserController {
 
     @DeleteMapping(path = PATH_DELETE)
     public ResponseEntity delete(@PathVariable("id") long id) {
-        userInteractor.delete(id);
+        try {
+            userInteractor.delete(id);
+        } catch (EmptyResultDataAccessException e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity(HttpStatus.OK);
     }
 }
