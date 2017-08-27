@@ -7,6 +7,7 @@ import name.isergius.tasks.codemark.usersvc.ui.util.DeserializerRoleJsonConverte
 import name.isergius.tasks.codemark.usersvc.ui.util.SerializerRoleJsonConverter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -21,6 +22,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
+    @NotNull
     @Basic
     private String name;
 

@@ -10,6 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @EnableJpaRepositories
 @SpringBootApplication
@@ -33,4 +34,9 @@ public class UsersvcApplication {
     public DeserializerRoleJsonConverter deserializerRoleJsonConverter(RoleRepository roleRepository) {
         return new DeserializerRoleJsonConverter(roleRepository);
     }
+
+	@Bean
+	public LocalValidatorFactoryBean validatorFactoryBean() {
+		return new LocalValidatorFactoryBean();
+	}
 }
