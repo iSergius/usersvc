@@ -25,7 +25,7 @@ public class UserTest {
 
     @Test
     public void testName_checkNotNullConstraint() throws Exception {
-        User user = new User(null, "adm", "Secret", asList(new Role("ADMIN")));
+        User user = new User(null, "adm", "S2ecret", asList(new Role("ADMIN")));
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);
 
@@ -34,7 +34,7 @@ public class UserTest {
 
     @Test
     public void testLogin_checkNotNullConstraint() throws Exception {
-        User user = new User("Admin", null, "Secret", asList(new Role("ADMIN")));
+        User user = new User("Admin", null, "S1ecret", asList(new Role("ADMIN")));
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);
 
@@ -52,7 +52,19 @@ public class UserTest {
 
     @Test
     public void testPassword_checkUppercaseLatterConstraint() throws Exception {
-        User user = new User("Admin", "adm", "ttt", asList(new Role("ADMIN")));
+        User user = new User("Admin", "adm", "t4tt", asList(new Role("ADMIN")));
+
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+
+        assertEquals(1, violations.stream()
+                .filter(uv -> uv.getMessageTemplate()
+                        .equals("Password must contain min one latter and one digit"))
+                .count());
+    }
+
+    @Test
+    public void testPassword_checkDigitConstraint() throws Exception {
+        User user = new User("Admin", "adm", "Ttt", asList(new Role("ADMIN")));
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);
 
