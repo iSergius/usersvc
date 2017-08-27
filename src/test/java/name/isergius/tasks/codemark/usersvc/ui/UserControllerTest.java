@@ -90,7 +90,7 @@ public class UserControllerTest {
                 .put(PROPERTY_ROLES, roles)
                 .toString();
 
-        mockMvc.perform(post(PATH_ADD)
+        mockMvc.perform(post(BASE_PATH + PATH_ADD)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andExpect(status().isCreated());
@@ -112,7 +112,7 @@ public class UserControllerTest {
                 .put("success", true)
                 .toString();
 
-        mockMvc.perform(post(PATH_ADD)
+        mockMvc.perform(post(BASE_PATH + PATH_ADD)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
                 .andExpect(status().isCreated())
@@ -132,7 +132,7 @@ public class UserControllerTest {
                 .put(PROPERTY_ROLES, roles)
                 .toString();
 
-        mockMvc.perform(post(PATH_ADD)
+        mockMvc.perform(post(BASE_PATH + PATH_ADD)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
                 .andExpect(status().isCreated())
@@ -157,7 +157,7 @@ public class UserControllerTest {
                         .put(User.ROLE_CONSTRAINT_MESSAGE))
                 .toString();
 
-        mockMvc.perform(post(PATH_ADD)
+        mockMvc.perform(post(BASE_PATH + PATH_ADD)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
                 .andExpect(status().isBadRequest())
@@ -176,7 +176,7 @@ public class UserControllerTest {
                         .put(role.getId()))
                 .toString();
 
-        mockMvc.perform(get(PATH_GET, user.getId()).accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(BASE_PATH + PATH_GET, user.getId()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().json(content));
@@ -184,14 +184,14 @@ public class UserControllerTest {
 
     @Test
     public void testGet_notExistUser() throws Exception {
-        mockMvc.perform(get(PATH_GET, VALUE_ID).accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(BASE_PATH + PATH_GET, VALUE_ID).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void testDelete_success() throws Exception {
         User user = createUser();
-        mockMvc.perform(delete(PATH_DELETE, user.getId()))
+        mockMvc.perform(delete(BASE_PATH + PATH_DELETE, user.getId()))
                 .andExpect(status().isOk());
         assertTrue(userRepository.count() == 0);
     }
@@ -199,7 +199,7 @@ public class UserControllerTest {
     @Test
     public void testDelete_tryDeleteIsNotExistUser() throws Exception {
         long id = 1;
-        mockMvc.perform(delete(PATH_DELETE, id))
+        mockMvc.perform(delete(BASE_PATH + PATH_DELETE, id))
                 .andExpect(status().isBadRequest());
     }
 
@@ -234,7 +234,7 @@ public class UserControllerTest {
                 .put("number", 0)
                 .toString();
 
-        mockMvc.perform(get(PATH_LIST).accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(BASE_PATH + PATH_LIST).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(responseBody));
     }
@@ -253,7 +253,7 @@ public class UserControllerTest {
                 .put("number", 0)
                 .toString();
 
-        mockMvc.perform(get(PATH_LIST).accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(BASE_PATH + PATH_LIST).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(responseBody));
     }
@@ -270,7 +270,7 @@ public class UserControllerTest {
                 .put(PROPERTY_ROLES, new JSONArray().put(role.getId()))
                 .toString();
 
-        mockMvc.perform(put(PATH_EDIT, user.getId())
+        mockMvc.perform(put(BASE_PATH + PATH_EDIT, user.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andExpect(status().isOk());
@@ -294,7 +294,7 @@ public class UserControllerTest {
                 .put(PROPERTY_ROLES, roles)
                 .toString();
 
-        mockMvc.perform(put(PATH_EDIT, VALUE_ID)
+        mockMvc.perform(put(BASE_PATH + PATH_EDIT, VALUE_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andExpect(status().isBadRequest());
@@ -316,7 +316,7 @@ public class UserControllerTest {
                 .put("errors", new JSONArray().put("User is not exist"))
                 .toString();
 
-        mockMvc.perform(put(PATH_EDIT, VALUE_ID)
+        mockMvc.perform(put(BASE_PATH + PATH_EDIT, VALUE_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
                 .andExpect(status().isBadRequest())
@@ -336,7 +336,7 @@ public class UserControllerTest {
                 .put(PROPERTY_ROLES, roles)
                 .toString();
 
-        mockMvc.perform(put(PATH_EDIT, user.getId() + 1)
+        mockMvc.perform(put(BASE_PATH + PATH_EDIT, user.getId() + 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andExpect(status().isBadRequest());
@@ -359,7 +359,7 @@ public class UserControllerTest {
                 .put("errors", new JSONArray().put("Path id and user id is not equals"))
                 .toString();
 
-        mockMvc.perform(put(PATH_EDIT, user.getId() + 1)
+        mockMvc.perform(put(BASE_PATH + PATH_EDIT, user.getId() + 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
                 .andExpect(status().isBadRequest())
@@ -381,13 +381,8 @@ public class UserControllerTest {
                 .put(PROPERTY_PASSWORD, user.getPassword())
                 .put(PROPERTY_ROLES, new JSONArray().put(role.getId()))
                 .toString();
-        mockMvc.perform(post(PATH_ADD)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody))
-                .andExpect(status().isCreated())
-                .andExpect(content().json(responseBody));
 
-        mockMvc.perform(put(PATH_EDIT, user.getId())
+        mockMvc.perform(put(BASE_PATH + PATH_EDIT, user.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
                 .andExpect(status().isOk())

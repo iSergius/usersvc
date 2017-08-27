@@ -20,13 +20,16 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
+import static name.isergius.tasks.codemark.usersvc.ui.UserController.BASE_PATH;
 
 /**
  * Sergey Kondratyev
  */
 @RestController
+@RequestMapping(path = BASE_PATH)
 public class UserController {
 
+    public static final String BASE_PATH = "/user";
     public static final String PATH_ADD = "/add";
     public static final String PATH_GET = "/get/{id}";
     public static final String PATH_DELETE = "/delete/{id}";
