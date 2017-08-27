@@ -10,6 +10,7 @@ import name.isergius.tasks.codemark.usersvc.ui.util.SerializerRoleJsonConverter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -18,10 +19,12 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
 
     public static final String ROLE_CONSTRAINT_MESSAGE = "Is not exist role(s)";
     public static final String PASSWORD_CONSTRAINT_MESSAGE = "Password must contain min one latter and one digit";
+
+    private static final long serialVersionUID = 1630259917384561813L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

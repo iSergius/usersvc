@@ -1,6 +1,7 @@
 package name.isergius.tasks.codemark.usersvc.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -9,7 +10,9 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "roles")
-public class Role {
+public class Role implements Serializable {
+
+    private static final long serialVersionUID = 863262607332376575L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
