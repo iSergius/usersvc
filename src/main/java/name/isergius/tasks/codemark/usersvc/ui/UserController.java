@@ -80,8 +80,12 @@ public class UserController {
         try {
             userInteractor.edit(user);
             return ResponseEntity.ok(new ResponseMessage());
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        } catch (ConstraintViolationException e) {
+            return ResponseEntity.badRequest()
+                    .body(new ResponseMessage(e.getConstraintViolations()
+                            .stream()
+                            .map(ConstraintViolation::getMessage)
+                            .collect(Collectors.toSet())));
         }
     }
 

@@ -2,10 +2,12 @@ package name.isergius.tasks.codemark.usersvc.domain;
 
 import name.isergius.tasks.codemark.usersvc.data.UserRepository;
 import name.isergius.tasks.codemark.usersvc.model.User;
+import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -58,7 +60,10 @@ public class UserInterctorImpl implements UserInteractor {
                 throw new ConstraintViolationException(violations);
             }
         } else {
-            throw new IllegalArgumentException("User is not exist");
+            //TODO refactor
+            ConstraintViolation<User> violation = ConstraintViolationImpl.forBeanValidation(null,
+                    null, "User is not exist", User.class, user, null, user, null, null, null, null);
+            throw new ConstraintViolationException(Collections.singleton(violation));
         }
     }
 }

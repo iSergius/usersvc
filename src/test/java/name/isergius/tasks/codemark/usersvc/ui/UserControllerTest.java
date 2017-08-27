@@ -276,6 +276,29 @@ public class UserControllerTest {
     }
 
     @Test
+    public void testEdit_errorResponse() throws Exception {
+        JSONArray roles = new JSONArray()
+                .put(1);
+        String requestBody = new JSONObject()
+                .put(PROPERTY_ID, VALUE_ID)
+                .put(PROPERTY_NAME, VALUE_NAME)
+                .put(PROPERTY_LOGIN, VALUE_LOGIN)
+                .put(PROPERTY_PASSWORD, VALUE_PASSWORD)
+                .put(PROPERTY_ROLES, roles)
+                .toString();
+        String responseBody = new JSONObject()
+                .put("success", false)
+                .put("errors", new JSONArray().put("User is not exist"))
+                .toString();
+
+        mockMvc.perform(put(PATH_EDIT, VALUE_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(responseBody));
+    }
+
+    @Test
     public void testEdit_editUserByWrongPath() throws Exception {
         User user = createUser();
         JSONArray roles = new JSONArray()
