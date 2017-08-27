@@ -25,11 +25,11 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static name.isergius.tasks.codemark.usersvc.ui.UserController.*;
+import static org.hamcrest.Matchers.any;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Sergey Kondratyev
@@ -113,6 +113,26 @@ public class UserControllerTest {
                 .content(requestBody))
                 .andExpect(status().isCreated())
                 .andExpect(content().json(responseBody));
+
+        assertEquals(1, userRepository.count());
+    }
+
+    @Test
+    public void testAdd_successLocation() throws Exception {
+        JSONArray roles = new JSONArray()
+                .put(role.getId());
+        String requestBody = new JSONObject()
+                .put(PROPERTY_NAME, VALUE_NAME)
+                .put(PROPERTY_LOGIN, VALUE_LOGIN)
+                .put(PROPERTY_PASSWORD, VALUE_PASSWORD)
+                .put(PROPERTY_ROLES, roles)
+                .toString();
+
+        mockMvc.perform(post(PATH_ADD)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("Location", any(String.class)));
 
         assertEquals(1, userRepository.count());
     }

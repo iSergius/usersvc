@@ -23,10 +23,11 @@ public class UserInterctorImpl implements UserInteractor {
     }
 
     @Override
-    public void add(User user) {
+    public long add(User user) {
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         if (violations.isEmpty()) {
-            userRepository.save(user);
+            return userRepository.save(user)
+                    .getId();
         } else {
             throw new ConstraintViolationException(violations);
         }

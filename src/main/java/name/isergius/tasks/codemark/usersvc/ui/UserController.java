@@ -7,9 +7,11 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -36,8 +38,12 @@ public class UserController {
     @PostMapping(path = PATH_ADD)
     public ResponseEntity<ResponseMessage> add(@RequestBody User user) {
         try {
-            userInteractor.add(user);
-            return new ResponseEntity<>(new ResponseMessage(), HttpStatus.CREATED);
+            long id = userInteractor.add(user);
+            URI location = ServletUriComponentsBuilder.fromPath(PATH_GET)
+                    .buildAndExpand(id)
+                    .toUri();
+            return ResponseEntity.created(location)
+                    .body(new ResponseMessage());
         } catch (ConstraintViolationException e) {
             Set<String> errors = e.getConstraintViolations().stream()
                     .map(ConstraintViolation::getMessage)

@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface UserInteractor {
 
-    void add(User user);
+    long add(User user);
 
     User get(long id);
 
