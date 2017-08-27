@@ -37,7 +37,7 @@ public class UserController {
     public ResponseEntity<ResponseMessage> add(@RequestBody User user) {
         try {
             userInteractor.add(user);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(new ResponseMessage(), HttpStatus.CREATED);
         } catch (ConstraintViolationException e) {
             Set<String> errors = e.getConstraintViolations().stream()
                     .map(ConstraintViolation::getMessage)
