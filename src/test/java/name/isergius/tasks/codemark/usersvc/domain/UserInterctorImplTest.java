@@ -18,6 +18,7 @@ import javax.validation.Validator;
 import static java.util.Arrays.asList;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Sergey Kondratyev
@@ -43,6 +44,7 @@ public class UserInterctorImplTest {
     public void testAdd_saveInRepository() throws Exception {
         long id = 1;
         User expectedUser = new User(id, "Admin", "adm", "Pass1", asList(new Role(id, "admin")));
+        when(repository.save(expectedUser)).thenReturn(expectedUser);
 
         interctor.add(expectedUser);
 
@@ -73,6 +75,15 @@ public class UserInterctorImplTest {
         User user = new User(null, "admin", "secret", asList(new Role("admin")));
 
         interctor.add(user);
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void testEdit_validation() throws Exception {
+        long id = 1L;
+        User user = new User(id, null, "admin", "secret", asList(new Role("admin")));
+        when(repository.exists(id)).thenReturn(true);
+
+        interctor.edit(user);
     }
 
 }

@@ -51,7 +51,12 @@ public class UserInterctorImpl implements UserInteractor {
     @Override
     public void edit(User user) {
         if (userRepository.exists(user.getId())) {
-            userRepository.save(user);
+            Set<ConstraintViolation<User>> violations = validator.validate(user);
+            if (violations.isEmpty()) {
+                userRepository.save(user);
+            } else {
+                throw new ConstraintViolationException(violations);
+            }
         } else {
             throw new IllegalArgumentException("User is not exist");
         }
