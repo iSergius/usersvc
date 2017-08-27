@@ -3,6 +3,7 @@ package name.isergius.tasks.codemark.usersvc.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import name.isergius.tasks.codemark.usersvc.data.validation.AllExist;
 import name.isergius.tasks.codemark.usersvc.ui.util.DeserializerRoleJsonConverter;
 import name.isergius.tasks.codemark.usersvc.ui.util.SerializerRoleJsonConverter;
 
@@ -36,6 +37,7 @@ public class User {
     @Basic
     private String password;
 
+    @AllExist(message = "Is not exist role(s)")
     @JsonDeserialize(contentConverter = DeserializerRoleJsonConverter.class)
     @JsonSerialize(contentConverter = SerializerRoleJsonConverter.class)
     @ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER)

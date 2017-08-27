@@ -110,4 +110,13 @@ public class UserTest {
 
         assertTrue(violations.isEmpty());
     }
+
+    @Test
+    public void testRoles_checkInvalidRole() throws Exception {
+        User user = new User("Admin", "adm", "tt3etTtt", asList(new Role()));
+
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+
+        assertEquals(1, violations.size());
+    }
 }
