@@ -3,17 +3,21 @@ package name.isergius.tasks.codemark.usersvc.domain;
 import name.isergius.tasks.codemark.usersvc.data.UserRepository;
 import name.isergius.tasks.codemark.usersvc.model.User;
 import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 /**
  * Sergey Kondratyev
  */
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class UserInterctorImpl implements UserInteractor {
 
     private UserRepository userRepository;
@@ -46,8 +50,8 @@ public class UserInterctorImpl implements UserInteractor {
     }
 
     @Override
-    public List<User> list() {
-        return userRepository.findAll();
+    public Page<User> list(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     @Override

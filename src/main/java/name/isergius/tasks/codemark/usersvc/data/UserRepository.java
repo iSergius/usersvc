@@ -1,9 +1,9 @@
 package name.isergius.tasks.codemark.usersvc.data;
 
 import name.isergius.tasks.codemark.usersvc.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
-
-import java.util.List;
 
 /**
  * Sergey Kondratyev
@@ -19,5 +19,5 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Override
     void delete(Long id);
 
-    List<User> findAll();
+    Page<User> findAll(Pageable pageable);
 }

@@ -204,33 +204,54 @@ public class UserControllerTest {
         User user1 = userRepository.save(new User("Петя", "petr", "P321321", asList(role)));
         User user2 = userRepository.save(new User("Иван", "ivan", "P456456", asList(role)));
 
-        String array = new JSONArray()
-                .put(new JSONObject()
-                        .put(PROPERTY_ID, user1.getId())
-                        .put(PROPERTY_NAME, user1.getName())
-                        .put(PROPERTY_LOGIN, user1.getLogin())
-                        .put(PROPERTY_PASSWORD, user1.getPassword())
-                        .put(PROPERTY_ROLES, new JSONArray()
-                                .put(role.getId())))
-                .put(new JSONObject()
-                        .put(PROPERTY_ID, user2.getId())
-                        .put(PROPERTY_NAME, user2.getName())
-                        .put(PROPERTY_LOGIN, user2.getLogin())
-                        .put(PROPERTY_PASSWORD, user2.getPassword())
-                        .put(PROPERTY_ROLES, new JSONArray()
-                                .put(role.getId())))
+        String responseBody = new JSONObject()
+                .put("content", new JSONArray()
+                        .put(new JSONObject()
+                                .put(PROPERTY_ID, user1.getId())
+                                .put(PROPERTY_NAME, user1.getName())
+                                .put(PROPERTY_LOGIN, user1.getLogin())
+                                .put(PROPERTY_PASSWORD, user1.getPassword())
+                                .put(PROPERTY_ROLES, new JSONArray()
+                                        .put(role.getId())))
+                        .put(new JSONObject()
+                                .put(PROPERTY_ID, user2.getId())
+                                .put(PROPERTY_NAME, user2.getName())
+                                .put(PROPERTY_LOGIN, user2.getLogin())
+                                .put(PROPERTY_PASSWORD, user2.getPassword())
+                                .put(PROPERTY_ROLES, new JSONArray()
+                                        .put(role.getId()))))
+                .put("last", true)
+                .put("totalElements", 2)
+                .put("totalPages", 1)
+                .put("sort", null)
+                .put("first", true)
+                .put("numberOfElements", 2)
+                .put("size", 10)
+                .put("number", 0)
                 .toString();
 
         mockMvc.perform(get(PATH_LIST).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(array));
+                .andExpect(content().json(responseBody));
     }
 
     @Test
     public void testList_empty() throws Exception {
+        String responseBody = new JSONObject()
+                .put("content", new JSONArray())
+                .put("last", true)
+                .put("totalElements", 0)
+                .put("totalPages", 0)
+                .put("sort", null)
+                .put("first", true)
+                .put("numberOfElements", 0)
+                .put("size", 10)
+                .put("number", 0)
+                .toString();
+
         mockMvc.perform(get(PATH_LIST).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[]"));
+                .andExpect(content().json(responseBody));
     }
 
     @Test

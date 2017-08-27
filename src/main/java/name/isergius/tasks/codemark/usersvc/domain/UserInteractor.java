@@ -1,8 +1,8 @@
 package name.isergius.tasks.codemark.usersvc.domain;
 
 import name.isergius.tasks.codemark.usersvc.model.User;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Sergey Kondratyev
@@ -15,7 +15,7 @@ public interface UserInteractor {
 
     void delete(long id);
 
-    List<User> list();
+    Page<User> list(Pageable pageable);
 
     void edit(User user);
 }

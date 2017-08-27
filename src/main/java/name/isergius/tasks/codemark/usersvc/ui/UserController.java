@@ -4,6 +4,9 @@ import name.isergius.tasks.codemark.usersvc.domain.UserInteractor;
 import name.isergius.tasks.codemark.usersvc.model.User;
 import name.isergius.tasks.codemark.usersvc.ui.dto.ResponseMessage;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +15,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.net.URI;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -65,9 +67,9 @@ public class UserController {
     }
 
     @GetMapping(path = PATH_LIST)
-    public ResponseEntity<List<User>> list() {
-        List<User> users = userInteractor.list();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+    public ResponseEntity<Page<User>> list(@PageableDefault Pageable pageable) {
+        Page<User> users = userInteractor.list(pageable);
+        return ResponseEntity.ok(users);
     }
 
     @PutMapping(path = PATH_EDIT)
