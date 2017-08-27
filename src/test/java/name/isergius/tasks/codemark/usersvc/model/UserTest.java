@@ -12,6 +12,7 @@ import java.util.Set;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Sergey Kondratyev
@@ -72,5 +73,14 @@ public class UserTest {
                 .filter(uv -> uv.getMessageTemplate()
                         .equals("Password must contain min one latter and one digit"))
                 .count());
+    }
+
+    @Test
+    public void testPassword_checkDigitAndLaterConstraintCaseOne() throws Exception {
+        User user = new User("Admin", "adm", "3Ttt", asList(new Role("ADMIN")));
+
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+
+        assertTrue(violations.isEmpty());
     }
 }
