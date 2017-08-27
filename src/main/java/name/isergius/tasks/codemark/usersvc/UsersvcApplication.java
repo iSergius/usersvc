@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+import javax.validation.Validator;
+
 @EnableJpaRepositories
 @SpringBootApplication
 public class UsersvcApplication {
@@ -26,8 +28,8 @@ public class UsersvcApplication {
 	}
 
 	@Bean
-	public UserInteractor userInteractor(UserRepository userRepository) {
-		return new UserInterctorImpl(userRepository);
+	public UserInteractor userInteractor(UserRepository userRepository, Validator validator) {
+		return new UserInterctorImpl(userRepository, validator);
 	}
 
     @Bean
