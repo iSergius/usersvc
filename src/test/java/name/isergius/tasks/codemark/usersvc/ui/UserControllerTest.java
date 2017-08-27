@@ -46,7 +46,7 @@ public class UserControllerTest {
 
     public static final String VALUE_NAME = "Вася";
     public static final String VALUE_LOGIN = "vasa";
-    public static final String VALUE_PASSWORD = "123123";
+    public static final String VALUE_PASSWORD = "P123123";
     public static final String VALUE_ROLE = "ADMIN";
     public static final long VALUE_ID = 1;
     public static final String PROPERTY_ID = "id";
@@ -133,8 +133,8 @@ public class UserControllerTest {
 
     @Test
     public void testList_success() throws Exception {
-        User user1 = userRepository.save(new User("Петя", "petr", "321321", asList(role)));
-        User user2 = userRepository.save(new User("Иван", "ivan", "456456", asList(role)));
+        User user1 = userRepository.save(new User("Петя", "petr", "P321321", asList(role)));
+        User user2 = userRepository.save(new User("Иван", "ivan", "P456456", asList(role)));
 
         String array = new JSONArray()
                 .put(new JSONObject()
