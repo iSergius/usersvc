@@ -77,7 +77,16 @@ public class UserTest {
 
     @Test
     public void testPassword_checkDigitAndLaterConstraintCaseOne() throws Exception {
-        User user = new User("Admin", "adm", "3Ttt", asList(new Role("ADMIN")));
+        User user = new User("Admin", "adm", "tt3Ttt", asList(new Role("ADMIN")));
+
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+
+        assertTrue(violations.isEmpty());
+    }
+
+    @Test
+    public void testPassword_checkDigitAndLaterConstraintCaseTwo() throws Exception {
+        User user = new User("Admin", "adm", "ttT3tt", asList(new Role("ADMIN")));
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);
 
