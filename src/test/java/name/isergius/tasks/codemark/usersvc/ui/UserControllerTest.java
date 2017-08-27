@@ -294,6 +294,35 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    public void testEdit_successResponse() throws Exception {
+
+        User user = createUser();
+        Role role = roleRepository.save(new Role("USER"));
+        String responseBody = new JSONObject()
+                .put("success", true)
+                .toString();
+
+        String requestBody = new JSONObject()
+                .put(PROPERTY_ID, user.getId())
+                .put(PROPERTY_NAME, user.getName())
+                .put(PROPERTY_LOGIN, user.getLogin())
+                .put(PROPERTY_PASSWORD, user.getPassword())
+                .put(PROPERTY_ROLES, new JSONArray().put(role.getId()))
+                .toString();
+        mockMvc.perform(post(PATH_ADD)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().isCreated())
+                .andExpect(content().json(responseBody));
+
+        mockMvc.perform(put(PATH_EDIT, user.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().isOk())
+                .andExpect(content().json(responseBody));
+    }
+
     private User createUser() {
         List<Role> roles = asList(role);
         return userRepository.save(new User(VALUE_ID, VALUE_NAME, VALUE_LOGIN, VALUE_PASSWORD, roles));
