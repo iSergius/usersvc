@@ -295,8 +295,31 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testEdit_successResponse() throws Exception {
+    public void testEdit_responseOnEditUserByWrongPath() throws Exception {
+        User user = createUser();
+        JSONArray roles = new JSONArray()
+                .put(1);
+        String requestBody = new JSONObject()
+                .put(PROPERTY_ID, user.getId())
+                .put(PROPERTY_NAME, VALUE_NAME)
+                .put(PROPERTY_LOGIN, VALUE_LOGIN)
+                .put(PROPERTY_PASSWORD, VALUE_PASSWORD)
+                .put(PROPERTY_ROLES, roles)
+                .toString();
+        String responseBody = new JSONObject()
+                .put("success", false)
+                .put("errors", new JSONArray().put("Path id and user id is not equals"))
+                .toString();
 
+        mockMvc.perform(put(PATH_EDIT, user.getId() + 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(responseBody));
+    }
+
+    @Test
+    public void testEdit_successResponse() throws Exception {
         User user = createUser();
         Role role = roleRepository.save(new Role("USER"));
         String responseBody = new JSONObject()

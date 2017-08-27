@@ -17,6 +17,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.util.Arrays.asList;
+
 /**
  * Sergey Kondratyev
  */
@@ -72,7 +74,8 @@ public class UserController {
     public ResponseEntity<ResponseMessage> edit(@PathVariable("id") long id,
                                                 @RequestBody User user) {
         if (user.getId() != id) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest()
+                    .body(new ResponseMessage(asList("Path id and user id is not equals")));
         }
         try {
             userInteractor.edit(user);
