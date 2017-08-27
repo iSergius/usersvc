@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -57,6 +58,8 @@ public class UserControllerTest {
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private CacheManager cacheManager;
 
     private MockMvc mockMvc;
 
@@ -73,6 +76,7 @@ public class UserControllerTest {
     public void tearDown() throws Exception {
         userRepository.deleteAll();
         roleRepository.deleteAll();
+        cacheManager.getCache("usersCache").clear();
     }
 
     @Test
