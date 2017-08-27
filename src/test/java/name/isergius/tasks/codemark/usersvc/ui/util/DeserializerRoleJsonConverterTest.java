@@ -41,4 +41,12 @@ public class DeserializerRoleJsonConverterTest {
         assertEquals(expectedRole, actualRole);
     }
 
+    @Test
+    public void testConvert_notExistRole() throws Exception {
+        Role expectedRole = new Role();
+
+        Role actualRole = converter.convert(10L);
+
+        assertEquals(expectedRole, actualRole);
+    }
 }

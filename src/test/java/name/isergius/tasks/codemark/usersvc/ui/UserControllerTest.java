@@ -78,7 +78,7 @@ public class UserControllerTest {
     @Test
     public void testAdd_success() throws Exception {
         JSONArray roles = new JSONArray()
-                .put(1);
+                .put(role.getId());
         String content = new JSONObject()
                 .put(PROPERTY_NAME, VALUE_NAME)
                 .put(PROPERTY_LOGIN, VALUE_LOGIN)
