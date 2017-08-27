@@ -8,6 +8,7 @@ import name.isergius.tasks.codemark.usersvc.ui.util.SerializerRoleJsonConverter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -31,6 +32,7 @@ public class User {
     private String login;
 
     @NotNull
+    @Pattern(regexp = "(\\S*\\p{Upper}+\\S*)", message = "Password must contain min one latter and one digit")
     @Basic
     private String password;
 
