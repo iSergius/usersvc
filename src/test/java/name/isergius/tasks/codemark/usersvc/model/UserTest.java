@@ -101,4 +101,13 @@ public class UserTest {
 
         assertTrue(violations.isEmpty());
     }
+
+    @Test
+    public void testPassword_checkDigitAndLaterConstraintCaseFour() throws Exception {
+        User user = new User("Admin", "adm", "tt3etTtt", asList(new Role("ADMIN")));
+
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+
+        assertTrue(violations.isEmpty());
+    }
 }

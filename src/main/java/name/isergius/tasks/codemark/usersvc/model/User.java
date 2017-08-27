@@ -32,7 +32,7 @@ public class User {
     private String login;
 
     @NotNull
-    @Pattern(regexp = "(\\S*\\p{Upper}+\\S*\\d+\\S*)|(\\S*\\d+\\p{Upper}+\\S*)", message = "Password must contain min one latter and one digit")
+    @Pattern(regexp = "(\\S*\\p{Upper}+\\S*\\d+\\S*)|(\\S*\\d+\\S*\\p{Upper}+\\S*)", message = "Password must contain min one latter and one digit")
     @Basic
     private String password;
 
