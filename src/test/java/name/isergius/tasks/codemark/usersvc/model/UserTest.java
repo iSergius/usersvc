@@ -31,4 +31,13 @@ public class UserTest {
 
         assertEquals(1, violations.size());
     }
+
+    @Test
+    public void testLogin_checkNotNullConstraint() throws Exception {
+        User user = new User("Admin", null, "secret", asList(new Role("ADMIN")));
+
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+
+        assertEquals(1, violations.size());
+    }
 }
