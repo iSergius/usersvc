@@ -30,6 +30,7 @@ public class User {
     @Basic
     private String login;
 
+    @NotNull
     @Basic
     private String password;
 

@@ -173,6 +173,7 @@ public class UserControllerTest {
                 .put(PROPERTY_ID, user.getId())
                 .put(PROPERTY_NAME, user.getName())
                 .put(PROPERTY_LOGIN, user.getLogin())
+                .put(PROPERTY_PASSWORD, user.getPassword())
                 .put(PROPERTY_ROLES, new JSONArray().put(role.getId()))
                 .toString();
 
