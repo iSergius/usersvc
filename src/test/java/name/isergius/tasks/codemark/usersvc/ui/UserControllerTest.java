@@ -85,11 +85,35 @@ public class UserControllerTest {
                 .put(PROPERTY_PASSWORD, VALUE_PASSWORD)
                 .put(PROPERTY_ROLES, roles)
                 .toString();
+
         mockMvc.perform(post(PATH_ADD)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andExpect(status().isCreated());
-        assertTrue(userRepository.count() == 1);
+
+        assertEquals(1, userRepository.count());
+    }
+
+    @Test
+    public void testAdd_additionWrongUser() throws Exception {
+        JSONArray roles = new JSONArray()
+                .put(role.getId() + 1);
+        String requestBody = new JSONObject()
+                .put(PROPERTY_NAME, VALUE_NAME)
+                .put(PROPERTY_LOGIN, VALUE_LOGIN)
+                .put(PROPERTY_PASSWORD, VALUE_PASSWORD)
+                .put(PROPERTY_ROLES, roles)
+                .toString();
+        String responseBody = new JSONObject().put("success", false)
+                .put("errors", new JSONArray()
+                        .put(User.ROLE_CONSTRAINT_MESSAGE))
+                .toString();
+
+        mockMvc.perform(post(PATH_ADD)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(responseBody));
     }
 
     @Test

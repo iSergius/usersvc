@@ -2,13 +2,18 @@ package name.isergius.tasks.codemark.usersvc.ui;
 
 import name.isergius.tasks.codemark.usersvc.domain.UserInteractor;
 import name.isergius.tasks.codemark.usersvc.model.User;
+import name.isergius.tasks.codemark.usersvc.ui.dto.ResponseMessage;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Sergey Kondratyev
@@ -29,9 +34,16 @@ public class UserController {
     }
 
     @PostMapping(path = PATH_ADD)
-    public ResponseEntity add(@RequestBody User user) {
-        userInteractor.add(user);
-        return new ResponseEntity(HttpStatus.CREATED);
+    public ResponseEntity<ResponseMessage> add(@RequestBody User user) {
+        try {
+            userInteractor.add(user);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (ConstraintViolationException e) {
+            Set<String> errors = e.getConstraintViolations().stream()
+                    .map(ConstraintViolation::getMessage)
+                    .collect(Collectors.toSet());
+            return new ResponseEntity<>(new ResponseMessage(errors), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping(path = PATH_GET)

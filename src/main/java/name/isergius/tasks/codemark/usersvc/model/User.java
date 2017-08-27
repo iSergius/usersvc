@@ -20,6 +20,9 @@ import java.util.Objects;
 @Table(name = "users")
 public class User {
 
+    public static final String ROLE_CONSTRAINT_MESSAGE = "Is not exist role(s)";
+    public static final String PASSWORD_CONSTRAINT_MESSAGE = "Password must contain min one latter and one digit";
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
@@ -33,11 +36,11 @@ public class User {
     private String login;
 
     @NotNull
-    @Pattern(regexp = "(\\S*\\p{Upper}+\\S*\\d+\\S*)|(\\S*\\d+\\S*\\p{Upper}+\\S*)", message = "Password must contain min one latter and one digit")
+    @Pattern(regexp = "(\\S*\\p{Upper}+\\S*\\d+\\S*)|(\\S*\\d+\\S*\\p{Upper}+\\S*)", message = PASSWORD_CONSTRAINT_MESSAGE)
     @Basic
     private String password;
 
-    @AllExist(message = "Is not exist role(s)")
+    @AllExist(message = ROLE_CONSTRAINT_MESSAGE)
     @JsonDeserialize(contentConverter = DeserializerRoleJsonConverter.class)
     @JsonSerialize(contentConverter = SerializerRoleJsonConverter.class)
     @ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER)
